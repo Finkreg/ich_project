@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+lib/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.whl
+MANIFEST.in
+*.manifest
+
+# Environment-specific files
+.env
+.venv/
+venv/
+env/
+ENV/
+*.pot
+*.log
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
