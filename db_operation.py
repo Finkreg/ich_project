@@ -8,10 +8,10 @@ DB_CONFIG = {'host': 'ich-db.edu.itcareerhub.de',
              'database': "sakila"}
 
 # --- Настройки подключения к базе данных статистики ---
-STATS_DB_CONFIG = {'host': 'localhost',
-                   'user': 'your_stats_user',
-                   'password': 'your_stats_password',
-                   'database': 'popular_queries'}
+STATS_DB_CONFIG = {'host': 'ich-edit.edu.itcareerhub.de',
+                   'user': 'ich1',
+                   'password': 'ich1_password_ilovedbs',
+                   'database': 'group_111124_fp_Starodubov_Oleksii'}
 
 
 def connect_db(config):
@@ -78,6 +78,7 @@ def record_query(keywords):
             print(f"Error recording query: {err}")
             stats_conn.rollback()
         finally:
+            print("Success") 
             close_connection(stats_conn)
 
 

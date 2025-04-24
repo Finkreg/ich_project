@@ -120,6 +120,7 @@ def get_search_criteria(username):
         criteria["order_by"] = order_by
 
     search_log.log_user_search(username, search_list)
+    db_operation.record_query(search_list)
     return criteria
 
 

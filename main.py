@@ -1,6 +1,7 @@
 import process_queries
 import search_log
 import user_auth
+import db_operation
 
 
 
@@ -25,7 +26,8 @@ def main_menu():
         elif choice == "3":
             process_queries.show_all_age_ratings()
         elif choice == "4":
-            search_log.show_users_searched_items(name)
+            #search_log.show_users_searched_items(name)
+            db_operation.display_popular_queries()
         elif choice == "5":
             print("Exiting program.")
             break
