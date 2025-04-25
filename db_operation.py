@@ -14,6 +14,7 @@ STATS_DB_CONFIG = {'host': 'ich-edit.edu.itcareerhub.de',
                    'database': 'group_111124_fp_Starodubov_Oleksii'}
 
 
+# Функция, которая возвращает подключение к базе данных или None, если произошла ошибка
 def connect_db(config):
     try:
         connection = mysql.connector.connect(**config)
@@ -29,7 +30,8 @@ def close_connection(connection):
         connection.close()
 
 
-# Функция которая выполняет запрос
+# Функция которая выполняет запрос, сохраняя внесенные изменения или же 
+# откатываем изменения, если произошла ошибка. В конце закрываем объект курсора.
 def execute_query(connection, query, data=None):
     cursor = connection.cursor()
     try:
@@ -45,7 +47,7 @@ def execute_query(connection, query, data=None):
             cursor.close()
 
 
-# Функция которая возвращает данные курсора
+# Функция которая возвращает данные извлеченные курсором
 def fetch_results(cursor):
     try:
         return cursor.fetchall()
