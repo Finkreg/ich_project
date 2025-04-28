@@ -1,5 +1,6 @@
 import mysql.connector
 from datetime import datetime
+from termcolor import colored
 
 # --- Настройки подключения к основной базе данных ---
 DB_CONFIG = {'host': 'ich-db.edu.itcareerhub.de',
@@ -117,10 +118,9 @@ def call_database(data):
         try:
             cursor.execute(data)
             result = fetch_results(cursor)
-            print("=== ***** RESULT ***** ===")
+            print(colored("=== ***** RESULT ***** ===", "magenta"))
             for row in result:
-                print(row)
-            return result
+                print(" - " .join(map(str, row)))
         except mysql.connector.Error as err:
             print(f"Query error: {err}")
         finally:

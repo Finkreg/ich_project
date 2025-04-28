@@ -1,4 +1,3 @@
-import search_log
 import db_operation
 
 
@@ -12,11 +11,11 @@ def construct_query(criteria):
     order_by = criteria.get('order_by')
     film_name = criteria.get('film.title')
 
-    query = (f"select distinct {select_clause} "
+    query = (f"select {select_clause} "
              f"from film join film_category on film_category.film_id = film.film_id "
-             f"join category on category.category_id = film_category.category_id "
-             f"join film_actor on film_actor.film_id = film.film_id "
-             f"join actor on actor.actor_id = film_actor.actor_id ")
+             f"join category on category.category_id = film_category.category_id ")
+             #f"join film_actor on film_actor.film_id = film.film_id "
+             #f"join actor on actor.actor_id = film_actor.actor_id ")
 
     if film_name:
         query = query + f"WHERE film.title LIKE '%{film_name}%' "
@@ -32,14 +31,14 @@ def construct_query(criteria):
             query = query + f" AND {' AND '.join(where_clauses)} "
         else:
             query += f" WHERE {' AND '.join(where_clauses)}"
-    print(where_clauses) # отладочный принт для контроля фильтра WHERE
+    # print(where_clauses) # отладочный принт для контроля фильтра WHERE
 
     if order_by:
         query += f" ORDER BY {order_by}"
 
     if limit:
         query += f" LIMIT {limit}"
-    print(query) #  отладочный принт для контроля запроса SQL выборки
+    # print(query) #  отладочный принт для контроля запроса SQL выборки
     return query
 
 
@@ -130,7 +129,62 @@ def show_all_genres():
 
 
 def show_all_age_ratings():
-    query = """select distinct rating from film """
+    query = """SELECT distinct rating,
+CASE
+	WHEN rating = 'PG' THEN "Parental Guidance Suggested"
+	WHEN rating = 'G' THEN "General Audiences"
+	WHEN rating = 'NC-17' THEN "Adults Only"
+	WHEN rating = 'PG-13' THEN "Parents Strongly Cautioned"
+	WHEN rating  = 'R' THEN "Restricted"
+END as adviced_rating
+FROM film;
+ """
     db_operation.call_database(query)
 
 
+def search_by_genre_and_year():
+
+    user_genre, user_year, year_operator = None, None, None
+    search_queries = []
+
+    while not user_genre:    
+        user_genre = input("Enter the film genre to search: ").strip()
+        search_queries.append(user_genre)
+        if not user_genre:
+            print("Genre cannot be empty")
+    while not user_year or not user_year.isdigit():
+        user_year = input("Enter the year to search: ").strip()
+        search_queries.append(user_year)
+        if not user_year:
+            print("Year must be a number")
+    while year_operator not in['<', '>', '=']:
+        year_operator = input("Enter a year operator (<, >, =): ").strip()
+        if year_operator not in ['<', '>', '=']:
+            print("Invalid operator! Use <, >, or =.")
+
+    query = f"""
+    SELECT film.title, film.release_year, category.name AS genre
+    FROM film
+    JOIN film_category ON film_category.film_id = film.film_id
+    JOIN category ON category.category_id = film_category.category_id
+    WHERE category.name = '{user_genre}' AND film.release_year {year_operator} {user_year} 
+    LIMIT 10"""
+    db_operation.record_query(search_queries)
+    db_operation.call_database(query)
+
+
+
+def search_by_keyword():
+    while True:
+        keyword = input("Enter a keyword to search for: ")
+        if keyword:
+            query = f"""SELECT film.title, film.release_year, category.name AS genre
+    FROM film
+    JOIN film_category ON film_category.film_id = film.film_id
+    JOIN category ON category.category_id = film_category.category_id
+    WHERE film.title LIKE '%{keyword}%' 
+    LIMIT 10"""
+            break
+        else: continue
+    db_operation.record_query(keyword)
+    db_operation.call_database(query)
