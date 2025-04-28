@@ -72,6 +72,10 @@ def record_query(keywords):
                 )
             """)
             stats_conn.commit()
+            
+            #Необходимо проверить тип ключевых слов. Если это строка, преобразую ее в список
+            if isinstance(keywords, str):
+                keywords = [keywords]
 
             for keyword in keywords:
                 query = "INSERT INTO popular_queries (keyword) VALUES (%s)"
@@ -80,8 +84,7 @@ def record_query(keywords):
         except mysql.connector.Error as err:
             print(f"Error recording query: {err}")
             stats_conn.rollback()
-        finally:
-            print("Success") 
+        finally: 
             close_connection(stats_conn)
 
 
@@ -99,7 +102,7 @@ def display_popular_queries():
             """)
             popular_results = fetch_results(cursor)
             if popular_results:
-                print("\n=== Popular Search Queries ===")
+                print(colored("\n=== Popular Search Queries ===", "green"))
                 for keyword, popularity in popular_results:
                     print(f"- {keyword}: {popularity} times")
             else:
@@ -118,9 +121,13 @@ def call_database(data):
         try:
             cursor.execute(data)
             result = fetch_results(cursor)
+            print()
             print(colored("=== ***** RESULT ***** ===", "magenta"))
-            for row in result:
-                print(" - " .join(map(str, row)))
+            if result:
+                for row in result:
+                    print(" - " .join(map(str, row)))
+            else:
+                print("No data found")
         except mysql.connector.Error as err:
             print(f"Query error: {err}")
         finally:

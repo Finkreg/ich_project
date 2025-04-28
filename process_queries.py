@@ -14,8 +14,6 @@ def construct_query(criteria):
     query = (f"select {select_clause} "
              f"from film join film_category on film_category.film_id = film.film_id "
              f"join category on category.category_id = film_category.category_id ")
-             #f"join film_actor on film_actor.film_id = film.film_id "
-             #f"join actor on actor.actor_id = film_actor.actor_id ")
 
     if film_name:
         query = query + f"WHERE film.title LIKE '%{film_name}%' "
@@ -65,7 +63,7 @@ def search_films(criteria):
     db_operation.call_database(query)
 
 
-def get_search_criteria(username):
+def get_search_criteria():
     criteria = {}
     fields_to_select_sql = []
 
@@ -118,30 +116,33 @@ def get_search_criteria(username):
     if order_by:
         criteria["order_by"] = order_by
 
-    search_log.log_user_search(username, search_list)
     db_operation.record_query(search_list)
     return criteria
 
 
+# Функция которая выводит на экран все жанры из базы данных
 def show_all_genres():
     query = """select name from category"""
     db_operation.call_database(query)
 
 
+# Функция которая выводит на экран возрастные рейтинги и предоставляет
+# их расшифровку
 def show_all_age_ratings():
     query = """SELECT distinct rating,
-CASE
-	WHEN rating = 'PG' THEN "Parental Guidance Suggested"
-	WHEN rating = 'G' THEN "General Audiences"
-	WHEN rating = 'NC-17' THEN "Adults Only"
-	WHEN rating = 'PG-13' THEN "Parents Strongly Cautioned"
-	WHEN rating  = 'R' THEN "Restricted"
-END as adviced_rating
-FROM film;
- """
+            CASE
+                WHEN rating = 'PG' THEN "Parental Guidance Suggested"
+                WHEN rating = 'G' THEN "General Audiences"
+                WHEN rating = 'NC-17' THEN "Adults Only"
+                WHEN rating = 'PG-13' THEN "Parents Strongly Cautioned"
+                WHEN rating  = 'R' THEN "Restricted"
+            END as adviced_rating
+            FROM film;
+            """
     db_operation.call_database(query)
 
 
+# Функция которая реализует поиск по жанру и году
 def search_by_genre_and_year():
 
     user_genre, user_year, year_operator = None, None, None
@@ -173,7 +174,7 @@ def search_by_genre_and_year():
     db_operation.call_database(query)
 
 
-
+# Функция которая реализует поиск по ключевому слову
 def search_by_keyword():
     while True:
         keyword = input("Enter a keyword to search for: ")
