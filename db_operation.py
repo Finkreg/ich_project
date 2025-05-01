@@ -113,13 +113,13 @@ def display_popular_queries():
             close_connection(stats_conn)
 
 
-# Функция которая вызывает базу данных
-def call_database(data):
+# Функция которая вызывает базу данных, передает в нее сформированный запрос и выводит в консоль результаты.
+def call_database(query):
     connection = connect_db(DB_CONFIG)
     if connection:
         cursor = connection.cursor()
         try:
-            cursor.execute(data)
+            cursor.execute(query)
             result = fetch_results(cursor)
             print()
             print(colored("=== ***** RESULT ***** ===", "magenta"))

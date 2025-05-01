@@ -1,6 +1,8 @@
-import db_operation
+import db_operation # Импорт модуля, который взаимодействует с базой данных
 
 
+# Функция которая собирает строку SQL запроса к базе данных на основе собраных и переданых
+# в качестве аргумента критериев. 
 def construct_query(criteria):
     select_clause = criteria.get('select_clause', "*")
     where_clauses = []
@@ -29,17 +31,18 @@ def construct_query(criteria):
             query = query + f" AND {' AND '.join(where_clauses)} "
         else:
             query += f" WHERE {' AND '.join(where_clauses)}"
-    # print(where_clauses) # отладочный принт для контроля фильтра WHERE
+    # print(where_clauses) # дебаг принт для контроля фильтра WHERE
 
     if order_by:
         query += f" ORDER BY {order_by}"
 
     if limit:
         query += f" LIMIT {limit}"
-    # print(query) #  отладочный принт для контроля запроса SQL выборки
+    # print(query) #  дебаг принт для контроля запроса SQL выборки
     return query
 
 
+# Функция которая обрабатывает ввод yes/no. Создана для сокращения кода
 def select_yes_no(prompt):
     while True:
         answer = input(f"{prompt}: (yes/no): ").strip().lower()
@@ -48,6 +51,7 @@ def select_yes_no(prompt):
         print("Invalid input. Please enter 'yes' or 'no'.")
 
 
+# Функция которая обрабатывает опциональный ввод. Создана для сокращения кода
 def optional_input(prompt, validator = None):
     while True:
         value = input(f"{prompt}").strip()
@@ -58,11 +62,15 @@ def optional_input(prompt, validator = None):
         print("Invalid input")
 
 
+# Функция которая получает критериии, вызывает функцию формирующую SQL запрос, а 
+# затем запускает другую функцию, которая передает запрос в базу данных
 def search_films(criteria):
     query = construct_query(criteria)
     db_operation.call_database(query)
 
 
+# Функция которая формирует словарь критериев для последующей передачи в функцию, 
+# которая на основе этих данных формирует SQL запрос.
 def get_search_criteria():
     criteria = {}
     fields_to_select_sql = []

@@ -1,9 +1,10 @@
-import process_queries
-import db_operation
-from termcolor import colored
+# Импорт необходимых модулей
+import process_queries # Импорт модуля обработки запросов
+import db_operation # Импорт модуля работы с базой данных
+from termcolor import colored# Импорт модуля для добавления цвета в консольный вывод
 
 
-
+# Функция, которая реализует главное меню приложения.
 def main_menu():
     print(colored(f"::::: Welcome to the Movie Database! :::::", "red"))
     while True:
@@ -35,5 +36,6 @@ def main_menu():
         else:
             print("Invalid choice, try again.")
 
-
-main_menu()
+# Точка запуска приложения
+if __name__ =="__main__":
+    main_menu()
