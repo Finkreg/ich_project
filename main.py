@@ -17,7 +17,7 @@ def main_menu():
         print("6. Exit")
         print()
 
-        choice = input("Your choice: ")
+        choice = input("Enter the number to start the operation of your choice: ")
         if choice == "1":
             search_criteria = process_queries.get_search_criteria()
             process_queries.search_films(search_criteria)
@@ -34,7 +34,7 @@ def main_menu():
             print("Exiting program.")
             break
         else:
-            print("Invalid choice, try again.")
+            print("Invalid choice, select between 1 and 6. Try again.")
 
 # Точка запуска приложения
 if __name__ =="__main__":

@@ -13,28 +13,12 @@ Using the knowledge gained during the Python Fundamentals course and summarizing
 ## 2. Database Installation Instructions:
 
 Separate database installation is not required. Connection to databases is established on the ICH educational server.
+Environment Configuration:
 
-**Connection settings:**
+1. Create a `.env` file in the project's root directory.
+2. Copy the values from `.env.example`.
+3. Fill in the file with real data.
 
-* **Main database (Sakila):**
-    ```python
-    DB_CONFIG = {
-        'host': 'ich-db.edu.itcareerhub.de',
-        'user': 'ich1',
-        'password': 'password',
-        'database': "sakila"
-    }
-    ```
-
-* **Statistics database (with create and edit access):**
-    ```python
-    STATS_DB_CONFIG = {
-        'host': 'ich-edit.edu.itcareerhub.de',
-        'user': 'ich1',
-        'password': 'ich1_password_ilovedbs',
-        'database': 'group_111124_fp_Starodubov_Oleksii'
-    }
-    ```
 
 ## 3. Description of Available Application Commands:
 

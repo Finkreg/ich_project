@@ -1,18 +1,24 @@
 import mysql.connector
 from datetime import datetime
 from termcolor import colored
+from dotenv import load_dotenv
+import os
 
 # --- Настройки подключения к основной базе данных ---
-DB_CONFIG = {'host': 'ich-db.edu.itcareerhub.de',
-             'user': 'ich1',
-             'password': 'password',
-             'database': "sakila"}
-
+load_dotenv()
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME")
+}
 # --- Настройки подключения к базе данных статистики ---
-STATS_DB_CONFIG = {'host': 'ich-edit.edu.itcareerhub.de',
-                   'user': 'ich1',
-                   'password': 'ich1_password_ilovedbs',
-                   'database': 'group_111124_fp_Starodubov_Oleksii'}
+STATS_DB_CONFIG = {
+    "host": os.getenv("STATS_DB_HOST"),
+    "user": os.getenv("STATS_DB_USER"),
+    "password": os.getenv("STATS_DB_PASSWORD"),
+    "database": os.getenv("STATS_DB_NAME")
+}
 
 
 # Функция, которая возвращает подключение к базе данных или None, если произошла ошибка
